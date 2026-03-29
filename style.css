@@ -386,4 +386,9 @@ button:focus-visible {
     max-width: 11rem;
     font-size: 0.88rem;
   }
+
+  .keyboard-hint,
+  .shortcut-note {
+    display: none;
+  }
 }
