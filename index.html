@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ordskog</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app" aria-live="polite">
+    <section class="banner-shell">
+      <img class="banner-image" src="banner.png" alt="Ordskog-banner med rev og fugl i skogen" />
+    </section>
+
+    <section class="game-panel" id="gamePanel">
+      <div id="celebration" class="celebration-layer" aria-hidden="true"></div>
+
+      <div class="status-strip" aria-label="Spillstatus">
+        <span class="status-item">Runde <strong id="roundInfo">1 / 20</strong></span>
+        <span class="status-dot" aria-hidden="true"></span>
+        <span class="status-item">Poeng <strong id="scoreInfo">0</strong></span>
+      </div>
+
+      <div class="scramble-stage">
+        <div class="scramble" aria-label="Rotete ord" id="scrambledWord">--</div>
+      </div>
+
+      <form id="guessForm" autocomplete="off" class="guess-form">
+        <label for="guessInput" class="sr-only">Skriv svaret ditt</label>
+        <div class="input-row">
+          <input
+            id="guessInput"
+            name="guessInput"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            placeholder="Skriv ordet her"
+            aria-label="Gjett ordet"
+            required
+            maxlength="20"
+          />
+          <button class="primary-button" type="submit">Sjekk</button>
+        </div>
+      </form>
+
+      <div class="action-row">
+        <div class="hint-controls">
+          <button id="hintButton" class="secondary-button" type="button">Hint (1)</button>
+          <button id="nextButton" class="secondary-button" type="button">Neste ord (2)</button>
+        </div>
+        <p class="shortcut-note">Enter for å sjekke</p>
+      </div>
+
+      <div class="game-notes">
+        <p id="message" class="message">Klar for første ord?</p>
+        <p id="history" class="history" aria-live="polite"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
