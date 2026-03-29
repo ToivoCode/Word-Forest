@@ -14,7 +14,9 @@ The word list is also Norwegian.
 
 - `index.html` contains the page structure
 - `style.css` contains the design
-- `app.js` contains the game logic and word list
+- `app.js` contains the game logic
+- `dictionary.js` contains the word list
+- `AGENTS.md` guidance for future AI edits
 
 ## Use and editing
 
