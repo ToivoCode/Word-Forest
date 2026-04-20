@@ -7,6 +7,7 @@ const state = {
   currentWord: "",
   currentScrambled: "",
   currentAttempts: 0,
+  shuffleUsed: false,
   roundData: [],
   celebrationTimer: null
 };
@@ -22,6 +23,7 @@ const elements = {
   history: document.getElementById("history"),
   hintButton: document.getElementById("hintButton"),
   nextButton: document.getElementById("nextButton"),
+  reshuffleButton: document.getElementById("reshuffleButton"),
   celebration: document.getElementById("celebration")
 };
 
@@ -124,6 +126,8 @@ function startRound(forceNew = false) {
   state.currentWord = getRandomWord();
   state.currentScrambled = shuffleWord(state.currentWord);
   state.currentAttempts = 0;
+  state.shuffleUsed = false;
+  elements.reshuffleButton.disabled = false;
 
   if (state.currentScrambled === state.currentWord) {
     state.currentScrambled = shuffleWord(state.currentWord);
@@ -174,6 +178,26 @@ function checkGuess(guess) {
   } else {
     setMessage(`Ikke helt ennå. Forsøk ${state.currentAttempts}.`);
   }
+}
+
+function reshuffleWord() {
+  if (state.shuffleUsed) {
+    setMessage("Du kan bare stokke om én gang per ord.");
+    return;
+  }
+
+  const current = state.currentScrambled;
+  let next = shuffleWord(state.currentWord);
+  if (next === current) {
+    next = shuffleWord(state.currentWord);
+  }
+
+  state.currentScrambled = next;
+  state.shuffleUsed = true;
+  elements.reshuffleButton.disabled = true;
+  elements.scrambledWord.textContent = state.currentScrambled;
+  setMessage("Ordet er stokket om på nytt.");
+  elements.guessInput.focus();
 }
 
 function showHint() {
@@ -235,6 +259,11 @@ function handleKeydown(event) {
     event.preventDefault();
     nextWord();
   }
+
+  if (event.key === "3") {
+    event.preventDefault();
+    reshuffleWord();
+  }
 }
 
 function init() {
@@ -246,6 +275,7 @@ function init() {
   elements.guessForm.addEventListener("submit", handleSubmit);
   elements.hintButton.addEventListener("click", showHint);
   elements.nextButton.addEventListener("click", nextWord);
+  elements.reshuffleButton.addEventListener("click", reshuffleWord);
   window.addEventListener("keydown", handleKeydown);
 
   startRound(true);
