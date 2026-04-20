@@ -205,22 +205,9 @@ function checkGuess(guess) {
 }
 
 function showHint() {
-  if (state.shuffleUsed) {
-    setMessage("Du kan bare stokke om én gang per ord.");
-    return;
-  }
-
-  const current = state.currentScrambled;
-  let next = shuffleWord(state.currentWord);
-  if (next === current) {
-    next = shuffleWord(state.currentWord);
-  }
-
-  state.currentScrambled = next;
-  state.shuffleUsed = true;
-  elements.reshuffleButton.disabled = true;
-  elements.scrambledWord.textContent = state.currentScrambled;
-  setMessage("Ordet er stokket om på nytt.");
+  const first = state.currentWord[0] || "?";
+  const last = state.currentWord[state.currentWord.length - 1] || "?";
+  setMessage(`Hint: ${first} ... ${last}`);
   elements.guessInput.focus();
 }
 
@@ -284,9 +271,22 @@ function applyBannerCustomization() {
 }
 
 function reshuffleWord() {
-  const first = state.currentWord[0] || "?";
-  const last = state.currentWord[state.currentWord.length - 1] || "?";
-  setMessage(`Hint: ${first} ... ${last}`);
+  if (state.shuffleUsed) {
+    setMessage("Du kan bare stokke om én gang per ord.");
+    return;
+  }
+
+  const current = state.currentScrambled;
+  let next = shuffleWord(state.currentWord);
+  if (next === current) {
+    next = shuffleWord(state.currentWord);
+  }
+
+  state.currentScrambled = next;
+  state.shuffleUsed = true;
+  elements.reshuffleButton.disabled = true;
+  elements.scrambledWord.textContent = state.currentScrambled;
+  setMessage("Ordet er stokket om på nytt.");
   elements.guessInput.focus();
 }
 
