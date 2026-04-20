@@ -14,7 +14,7 @@ const BANNER_COLORS = [
   { value: "#c5e8e8", label: "Sjøgrønn" },
 ];
 
-const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄"];
+const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄", "🦒", "🦥", "🐱", "🧟", "🧌", "🐶"];
 
 const bannerState = {
   selectedColor: BANNER_COLORS[0].value,
