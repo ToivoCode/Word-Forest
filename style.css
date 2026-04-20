@@ -48,6 +48,8 @@ body {
 .banner-shell {
   overflow: hidden;
   margin-bottom: 1rem;
+  position: relative;
+  cursor: pointer;
 }
 
 .banner-image {
@@ -407,4 +409,129 @@ button:focus-visible {
   .shortcut-note {
     display: none;
   }
+}
+
+/* ── Custom banner display ───────────────────────────────── */
+.banner-custom-display {
+  display: none;
+  position: absolute;
+  inset: 0;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(4rem, 14vw, 8rem);
+  line-height: 1;
+}
+
+.banner-shell.is-custom .banner-image {
+  opacity: 0;
+}
+
+.banner-shell.is-custom .banner-custom-display {
+  display: flex;
+}
+
+/* ── Banner picker overlay ───────────────────────────────── */
+.banner-picker-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 100;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner-picker-overlay.is-open {
+  display: flex;
+}
+
+.banner-picker-panel {
+  background: var(--panel-strong);
+  border-radius: 24px;
+  padding: 1.5rem;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+}
+
+.banner-picker-title {
+  margin: 0 0 1.1rem;
+  font-size: 1.15rem;
+  color: var(--accent-dark);
+}
+
+.banner-picker-section {
+  margin-bottom: 1rem;
+}
+
+.banner-picker-label {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+  color: var(--muted);
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.banner-color-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.color-swatch {
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.color-swatch:hover,
+.color-swatch:focus-visible {
+  transform: scale(1.18);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.color-swatch.is-selected {
+  border-color: var(--accent-dark);
+  transform: scale(1.18);
+}
+
+.banner-animal-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+}
+
+.animal-button {
+  font-size: 1.65rem;
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  padding: 0.2rem 0.3rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+}
+
+.animal-button:hover,
+.animal-button:focus-visible {
+  transform: scale(1.25);
+  background: rgba(36, 119, 87, 0.07);
+}
+
+.animal-button.is-selected {
+  border-color: var(--accent-dark);
+  background: rgba(36, 119, 87, 0.1);
+  transform: scale(1.18);
+}
+
+.banner-picker-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.2rem;
 }

@@ -1,6 +1,26 @@
 const TOTAL_ROUNDS = 20;
 const DICTIONARY = window.DICTIONARY || [];
 
+const BANNER_COLORS = [
+  { value: "#bfe5f5", label: "Himmel" },
+  { value: "#a8e6cf", label: "Mynte" },
+  { value: "#def4c6", label: "Eng" },
+  { value: "#fff3b0", label: "Sol" },
+  { value: "#ffd6a5", label: "Fersken" },
+  { value: "#ffb3c1", label: "Rosa" },
+  { value: "#d4b8f0", label: "Lavendel" },
+  { value: "#b5d5ff", label: "Blåklokke" },
+  { value: "#f5d5c8", label: "Korall" },
+  { value: "#c5e8e8", label: "Sjøgrønn" },
+];
+
+const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄"];
+
+const bannerState = {
+  selectedColor: BANNER_COLORS[0].value,
+  selectedAnimal: BANNER_ANIMALS[0],
+};
+
 const state = {
   currentRound: 1,
   score: 0,
@@ -24,7 +44,11 @@ const elements = {
   hintButton: document.getElementById("hintButton"),
   nextButton: document.getElementById("nextButton"),
   reshuffleButton: document.getElementById("reshuffleButton"),
-  celebration: document.getElementById("celebration")
+  celebration: document.getElementById("celebration"),
+  bannerShell: document.getElementById("bannerShell"),
+  bannerImage: document.getElementById("bannerImage"),
+  bannerCustomDisplay: document.getElementById("bannerCustomDisplay"),
+  bannerPicker: document.getElementById("bannerPicker"),
 };
 
 function getRandomWord() {
@@ -180,7 +204,7 @@ function checkGuess(guess) {
   }
 }
 
-function reshuffleWord() {
+function showHint() {
   if (state.shuffleUsed) {
     setMessage("Du kan bare stokke om én gang per ord.");
     return;
@@ -200,7 +224,66 @@ function reshuffleWord() {
   elements.guessInput.focus();
 }
 
-function showHint() {
+function buildBannerPicker() {
+  const swatchContainer = document.getElementById("bannerColorSwatches");
+  BANNER_COLORS.forEach(({ value, label }) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "color-swatch";
+    btn.style.background = value;
+    btn.dataset.color = value;
+    btn.title = label;
+    btn.setAttribute("aria-label", label);
+    btn.addEventListener("click", () => selectBannerColor(value));
+    swatchContainer.appendChild(btn);
+  });
+
+  const animalContainer = document.getElementById("bannerAnimalGrid");
+  BANNER_ANIMALS.forEach(animal => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "animal-button";
+    btn.textContent = animal;
+    btn.setAttribute("aria-label", animal);
+    btn.addEventListener("click", () => selectBannerAnimal(animal));
+    animalContainer.appendChild(btn);
+  });
+}
+
+function selectBannerColor(color) {
+  bannerState.selectedColor = color;
+  document.querySelectorAll(".color-swatch").forEach(btn => {
+    btn.classList.toggle("is-selected", btn.dataset.color === color);
+  });
+}
+
+function selectBannerAnimal(animal) {
+  bannerState.selectedAnimal = animal;
+  document.querySelectorAll(".animal-button").forEach(btn => {
+    btn.classList.toggle("is-selected", btn.textContent === animal);
+  });
+}
+
+function openBannerPicker() {
+  selectBannerColor(bannerState.selectedColor);
+  selectBannerAnimal(bannerState.selectedAnimal);
+  elements.bannerPicker.classList.add("is-open");
+  elements.bannerPicker.setAttribute("aria-hidden", "false");
+}
+
+function closeBannerPicker() {
+  elements.bannerPicker.classList.remove("is-open");
+  elements.bannerPicker.setAttribute("aria-hidden", "true");
+}
+
+function applyBannerCustomization() {
+  elements.bannerShell.style.backgroundColor = bannerState.selectedColor;
+  elements.bannerCustomDisplay.textContent = bannerState.selectedAnimal;
+  elements.bannerShell.classList.add("is-custom");
+  closeBannerPicker();
+}
+
+function reshuffleWord() {
   const first = state.currentWord[0] || "?";
   const last = state.currentWord[state.currentWord.length - 1] || "?";
   setMessage(`Hint: ${first} ... ${last}`);
@@ -250,6 +333,10 @@ function handleKeydown(event) {
     return;
   }
 
+  if (event.key === "Escape") {
+    closeBannerPicker();
+  }
+
   if (event.key === "1") {
     event.preventDefault();
     showHint();
@@ -276,8 +363,18 @@ function init() {
   elements.hintButton.addEventListener("click", showHint);
   elements.nextButton.addEventListener("click", nextWord);
   elements.reshuffleButton.addEventListener("click", reshuffleWord);
+  elements.bannerShell.addEventListener("click", openBannerPicker);
+  elements.bannerShell.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBannerPicker(); }
+  });
+  document.getElementById("bannerApplyButton").addEventListener("click", applyBannerCustomization);
+  document.getElementById("bannerCancelButton").addEventListener("click", closeBannerPicker);
+  elements.bannerPicker.addEventListener("click", (e) => {
+    if (e.target === elements.bannerPicker) closeBannerPicker();
+  });
   window.addEventListener("keydown", handleKeydown);
 
+  buildBannerPicker();
   startRound(true);
 }
 

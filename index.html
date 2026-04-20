@@ -8,8 +8,9 @@
 </head>
 <body>
   <main class="app" aria-live="polite">
-    <section class="banner-shell">
-      <img class="banner-image" src="banner.png" alt="Ordskog-banner med rev og fugl i skogen" />
+    <section class="banner-shell" id="bannerShell" title="Klikk for å tilpasse banneret" role="button" tabindex="0" aria-label="Tilpass banneret">
+      <img class="banner-image" id="bannerImage" src="banner.png" alt="Ordskog-banner med rev og fugl i skogen" />
+      <div class="banner-custom-display" id="bannerCustomDisplay" aria-hidden="true"></div>
     </section>
 
     <section class="game-panel" id="gamePanel">
@@ -58,6 +59,24 @@
       </div>
     </section>
   </main>
+
+  <div id="bannerPicker" class="banner-picker-overlay" aria-hidden="true">
+    <div class="banner-picker-panel" role="dialog" aria-modal="true" aria-label="Tilpass banneret">
+      <h2 class="banner-picker-title">Tilpass banneret</h2>
+      <div class="banner-picker-section">
+        <p class="banner-picker-label">Farge</p>
+        <div class="banner-color-swatches" id="bannerColorSwatches"></div>
+      </div>
+      <div class="banner-picker-section">
+        <p class="banner-picker-label">Dyr</p>
+        <div class="banner-animal-grid" id="bannerAnimalGrid"></div>
+      </div>
+      <div class="banner-picker-actions">
+        <button class="primary-button" id="bannerApplyButton" type="button">Bruk</button>
+        <button class="secondary-button" id="bannerCancelButton" type="button">Avbryt</button>
+      </div>
+    </div>
+  </div>
 
   <script src="dictionary.js"></script>
   <script src="app.js"></script>
