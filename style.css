@@ -8,14 +8,28 @@
   --page-bottom: #edf7de;
   --panel: rgba(255, 255, 255, 0.92);
   --panel-strong: #ffffff;
+  --panel-border: rgba(255, 255, 255, 0.72);
   --text: #1d5848;
   --muted: #547668;
   --line: #d7eee3;
   --primary: #ff9040;
   --primary-hover: #f37823;
+  --button-text: #fffdf9;
   --secondary-border: #f1c35c;
+  --secondary-text: #815c00;
+  --secondary-bg: transparent;
   --accent-dark: #247757;
   --shadow: 0 20px 44px rgba(74, 120, 94, 0.14);
+  --status-dot: #9fcfae;
+  --scramble-top: #edfff5;
+  --scramble-bottom: #def4fb;
+  --scramble-border: #cfeee0;
+  --scramble-dash: #8fd7ab;
+  --scramble-inner-shadow: rgba(53, 165, 106, 0.06);
+  --input-border: #b8dfc8;
+  --input-bg: #fffef8;
+  --input-focus: #69c989;
+  --input-focus-shadow: rgba(99, 203, 135, 0.18);
 }
 
 body {
@@ -39,7 +53,7 @@ body {
 .banner-shell,
 .game-panel {
   background: var(--panel);
-  border: 3px solid rgba(255, 255, 255, 0.72);
+  border: 3px solid var(--panel-border);
   border-radius: 28px;
   box-shadow: var(--shadow);
   backdrop-filter: blur(6px);
@@ -135,15 +149,15 @@ body {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #9fcfae;
+  background: var(--status-dot);
 }
 
 .scramble-stage {
   margin-top: 1rem;
   padding: 1.15rem;
   border-radius: 26px;
-  background: linear-gradient(180deg, #edfff5 0%, #def4fb 100%);
-  border: 1px solid #cfeee0;
+  background: linear-gradient(180deg, var(--scramble-top) 0%, var(--scramble-bottom) 100%);
+  border: 1px solid var(--scramble-border);
 }
 
 .scramble {
@@ -152,14 +166,14 @@ body {
   font-weight: 900;
   color: var(--accent-dark);
   background: var(--panel-strong);
-  border: 2px dashed #8fd7ab;
+  border: 2px dashed var(--scramble-dash);
   border-radius: 24px;
   padding: 1.35rem 1.2rem;
   min-height: 7rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: inset 0 -8px 0 rgba(53, 165, 106, 0.06);
+  box-shadow: inset 0 -8px 0 var(--scramble-inner-shadow);
 }
 
 .scramble.is-celebrating {
@@ -180,8 +194,8 @@ body {
   width: 100%;
   padding: 1rem 1.1rem;
   border-radius: 18px;
-  border: 2px solid #b8dfc8;
-  background: #fffef8;
+  border: 2px solid var(--input-border);
+  background: var(--input-bg);
   font-size: 1.1rem;
   color: var(--text);
   outline: none;
@@ -189,8 +203,8 @@ body {
 }
 
 #guessInput:focus {
-  border-color: #69c989;
-  box-shadow: 0 0 0 5px rgba(99, 203, 135, 0.18);
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 5px var(--input-focus-shadow);
   transform: translateY(-1px);
 }
 
@@ -211,7 +225,7 @@ button:focus-visible {
 
 .primary-button {
   background: var(--primary);
-  color: #fffdf9;
+  color: var(--button-text);
   box-shadow: 0 12px 22px rgba(242, 116, 32, 0.18);
 }
 
@@ -221,8 +235,8 @@ button:focus-visible {
 }
 
 .secondary-button {
-  background: transparent;
-  color: #815c00;
+  background: var(--secondary-bg);
+  color: var(--secondary-text);
   border: 2px solid var(--secondary-border);
 }
 

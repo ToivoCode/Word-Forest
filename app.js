@@ -26,6 +26,19 @@ const bannerState = {
   selectedAnimal: BANNER_ANIMALS[0],
 };
 
+const ANIMAL_MOOD = {
+  "🦄": "vivid",
+  "🐺": "muted",
+  "🧟": "spooky",
+  "🧌": "earthy",
+  "🐯": "warm",
+  "🦁": "warm",
+  "🦜": "vivid",
+  "🦋": "vivid",
+  "🐧": "cool",
+  "🐸": "fresh",
+};
+
 const state = {
   currentRound: 1,
   score: 0,
@@ -55,6 +68,214 @@ const elements = {
   bannerCustomDisplay: document.getElementById("bannerCustomDisplay"),
   bannerPicker: document.getElementById("bannerPicker"),
 };
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+function hexToRgb(hex) {
+  const normalized = hex.replace("#", "");
+  const value = normalized.length === 3
+    ? normalized.split("").map(ch => ch + ch).join("")
+    : normalized;
+
+  const intValue = Number.parseInt(value, 16);
+  return {
+    r: (intValue >> 16) & 255,
+    g: (intValue >> 8) & 255,
+    b: intValue & 255,
+  };
+}
+
+function rgbToHex(r, g, b) {
+  const toHex = (n) => clamp(Math.round(n), 0, 255).toString(16).padStart(2, "0");
+  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+}
+
+function mixColors(colorA, colorB, ratio = 0.5) {
+  const a = hexToRgb(colorA);
+  const b = hexToRgb(colorB);
+  const t = clamp(ratio, 0, 1);
+
+  return rgbToHex(
+    a.r + (b.r - a.r) * t,
+    a.g + (b.g - a.g) * t,
+    a.b + (b.b - a.b) * t
+  );
+}
+
+function colorToHsl(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  const rn = r / 255;
+  const gn = g / 255;
+  const bn = b / 255;
+  const max = Math.max(rn, gn, bn);
+  const min = Math.min(rn, gn, bn);
+  const delta = max - min;
+
+  let h = 0;
+  if (delta) {
+    if (max === rn) h = ((gn - bn) / delta) % 6;
+    else if (max === gn) h = (bn - rn) / delta + 2;
+    else h = (rn - gn) / delta + 4;
+    h *= 60;
+    if (h < 0) h += 360;
+  }
+
+  const l = (max + min) / 2;
+  const s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+
+  return { h, s, l };
+}
+
+function hslToColor(h, s, l) {
+  const hue = ((h % 360) + 360) % 360;
+  const sat = clamp(s, 0, 1);
+  const light = clamp(l, 0, 1);
+  const c = (1 - Math.abs(2 * light - 1)) * sat;
+  const x = c * (1 - Math.abs((hue / 60) % 2 - 1));
+  const m = light - c / 2;
+  let r1 = 0;
+  let g1 = 0;
+  let b1 = 0;
+
+  if (hue < 60) {
+    r1 = c; g1 = x;
+  } else if (hue < 120) {
+    r1 = x; g1 = c;
+  } else if (hue < 180) {
+    g1 = c; b1 = x;
+  } else if (hue < 240) {
+    g1 = x; b1 = c;
+  } else if (hue < 300) {
+    r1 = x; b1 = c;
+  } else {
+    r1 = c; b1 = x;
+  }
+
+  return rgbToHex((r1 + m) * 255, (g1 + m) * 255, (b1 + m) * 255);
+}
+
+function luminance(hex) {
+  const { r, g, b } = hexToRgb(hex);
+  return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+}
+
+function adjustColor(hex, { hueShift = 0, saturation = 1, lightness = 1 }) {
+  const hsl = colorToHsl(hex);
+  return hslToColor(
+    hsl.h + hueShift,
+    hsl.s * saturation,
+    hsl.l * lightness
+  );
+}
+
+function buildThemePalette(baseColor) {
+  const isDark = luminance(baseColor) < 0.38;
+  const top = isDark ? mixColors(baseColor, "#07090f", 0.55) : mixColors(baseColor, "#ffffff", 0.35);
+  const mid = isDark ? mixColors(baseColor, "#111827", 0.5) : mixColors(baseColor, "#f7fffb", 0.55);
+  const bottom = isDark ? mixColors(baseColor, "#1a2230", 0.42) : mixColors(baseColor, "#fff7ea", 0.62);
+  const accent = isDark ? mixColors(baseColor, "#a8ffd5", 0.45) : adjustColor(baseColor, { saturation: 1.2, lightness: 0.62 });
+  const primary = isDark ? mixColors(baseColor, "#6ec8ff", 0.55) : adjustColor(baseColor, { saturation: 1.25, lightness: 0.72 });
+  const primaryHover = isDark
+    ? adjustColor(primary, { saturation: 1.08, lightness: 0.92 })
+    : adjustColor(primary, { saturation: 1.05, lightness: 0.86 });
+
+  return {
+    isDark,
+    "--page-top": top,
+    "--page-mid": mid,
+    "--page-bottom": bottom,
+    "--panel": isDark ? "rgba(15, 22, 35, 0.86)" : "rgba(255, 255, 255, 0.92)",
+    "--panel-strong": isDark ? "#182235" : "#ffffff",
+    "--panel-border": isDark ? "rgba(130, 170, 220, 0.2)" : "rgba(255, 255, 255, 0.72)",
+    "--text": isDark ? "#e5efff" : "#1d5848",
+    "--muted": isDark ? "#adc0d6" : "#547668",
+    "--line": isDark ? "#2e3f5d" : "#d7eee3",
+    "--primary": primary,
+    "--primary-hover": primaryHover,
+    "--button-text": isDark ? "#08111f" : "#fffdf9",
+    "--secondary-border": isDark ? mixColors(baseColor, "#b6ccff", 0.52) : mixColors(baseColor, "#f1c35c", 0.55),
+    "--secondary-text": isDark ? "#eaf3ff" : "#815c00",
+    "--secondary-bg": isDark ? "rgba(8, 13, 24, 0.35)" : "transparent",
+    "--accent-dark": accent,
+    "--shadow": isDark ? "0 20px 44px rgba(3, 7, 16, 0.5)" : "0 20px 44px rgba(74, 120, 94, 0.14)",
+    "--status-dot": isDark ? mixColors(baseColor, "#a6cbff", 0.5) : mixColors(baseColor, "#9fcfae", 0.4),
+    "--scramble-top": isDark ? "#142037" : mixColors(baseColor, "#edfff5", 0.68),
+    "--scramble-bottom": isDark ? "#172a45" : mixColors(baseColor, "#def4fb", 0.68),
+    "--scramble-border": isDark ? "#33537d" : mixColors(baseColor, "#cfeee0", 0.55),
+    "--scramble-dash": isDark ? "#6ea1df" : mixColors(baseColor, "#8fd7ab", 0.5),
+    "--scramble-inner-shadow": isDark ? "rgba(4, 10, 22, 0.4)" : "rgba(53, 165, 106, 0.06)",
+    "--input-border": isDark ? "#45638b" : mixColors(baseColor, "#b8dfc8", 0.6),
+    "--input-bg": isDark ? "#111b2c" : "#fffef8",
+    "--input-focus": isDark ? "#7fb7ff" : mixColors(baseColor, "#69c989", 0.55),
+    "--input-focus-shadow": isDark ? "rgba(110, 171, 255, 0.25)" : "rgba(99, 203, 135, 0.18)",
+  };
+}
+
+function applyAnimalMood(palette, animal) {
+  const mood = ANIMAL_MOOD[animal] || "neutral";
+  const next = { ...palette };
+
+  if (mood === "vivid") {
+    next["--primary"] = adjustColor(next["--primary"], { saturation: 1.45, lightness: 1.05 });
+    next["--primary-hover"] = adjustColor(next["--primary-hover"], { saturation: 1.4, lightness: 1.04 });
+    next["--accent-dark"] = adjustColor(next["--accent-dark"], { saturation: 1.35, lightness: 1.03 });
+  }
+
+  if (mood === "muted") {
+    next["--primary"] = adjustColor(next["--primary"], { saturation: 0.55, lightness: 0.95 });
+    next["--primary-hover"] = adjustColor(next["--primary-hover"], { saturation: 0.52, lightness: 0.92 });
+    next["--accent-dark"] = adjustColor(next["--accent-dark"], { saturation: 0.5, lightness: 0.92 });
+  }
+
+  if (mood === "spooky") {
+    next["--page-mid"] = mixColors(next["--page-mid"], "#0f2018", 0.58);
+    next["--page-bottom"] = mixColors(next["--page-bottom"], "#112418", 0.62);
+    next["--primary"] = "#70c97f";
+    next["--primary-hover"] = "#5bb06b";
+    next["--accent-dark"] = "#9ae7aa";
+    next["--secondary-text"] = "#d6f2db";
+  }
+
+  if (mood === "earthy") {
+    next["--primary"] = "#b88458";
+    next["--primary-hover"] = "#9f6d43";
+    next["--accent-dark"] = "#6f4a2d";
+    next["--secondary-border"] = "#9a7554";
+  }
+
+  if (mood === "warm") {
+    next["--primary"] = mixColors(next["--primary"], "#ff9b3f", 0.55);
+    next["--primary-hover"] = mixColors(next["--primary-hover"], "#f47b2b", 0.58);
+  }
+
+  if (mood === "cool") {
+    next["--primary"] = mixColors(next["--primary"], "#5da6ff", 0.52);
+    next["--primary-hover"] = mixColors(next["--primary-hover"], "#3f87da", 0.56);
+  }
+
+  if (mood === "fresh") {
+    next["--primary"] = mixColors(next["--primary"], "#5ccf70", 0.62);
+    next["--primary-hover"] = mixColors(next["--primary-hover"], "#43b559", 0.62);
+    next["--accent-dark"] = mixColors(next["--accent-dark"], "#2a8e3c", 0.5);
+  }
+
+  return next;
+}
+
+function applyThemeFromBanner() {
+  const root = document.documentElement;
+  const basePalette = buildThemePalette(bannerState.selectedColor);
+  const palette = applyAnimalMood(basePalette, bannerState.selectedAnimal);
+
+  Object.entries(palette).forEach(([name, value]) => {
+    if (name === "isDark") {
+      return;
+    }
+    root.style.setProperty(name, value);
+  });
+}
 
 function getRandomWord() {
   const index = Math.floor(Math.random() * DICTIONARY.length);
@@ -272,6 +493,7 @@ function applyBannerCustomization() {
   elements.bannerShell.style.backgroundColor = bannerState.selectedColor;
   elements.bannerCustomDisplay.textContent = bannerState.selectedAnimal;
   elements.bannerShell.classList.add("is-custom");
+  applyThemeFromBanner();
   closeBannerPicker();
 }
 
@@ -380,6 +602,7 @@ function init() {
   window.addEventListener("keydown", handleKeydown);
 
   buildBannerPicker();
+  applyThemeFromBanner();
   startRound(true);
 }
 
