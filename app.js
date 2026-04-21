@@ -12,6 +12,11 @@ const BANNER_COLORS = [
   { value: "#b5d5ff", label: "Blåklokke" },
   { value: "#f5d5c8", label: "Korall" },
   { value: "#c5e8e8", label: "Sjøgrønn" },
+  { value: "#ffffff", label: "Hvit" },
+  { value: "#c8a07a", label: "Brun" },
+  { value: "#1a2e5a", label: "Mørkeblå" },
+  { value: "#e8d5f5", label: "Lyselilla" },
+  { value: "#1a1a1a", label: "Svart" },
 ];
 
 const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄", "🦒", "🦥", "🐱", "🧟", "🧌", "🐶"];
