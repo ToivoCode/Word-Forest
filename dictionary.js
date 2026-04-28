@@ -32,5 +32,5 @@ window.DICTIONARY = [
   "bok", "lov", "lage", "din", "sto", "elev",
   "fin", "gul", "blomst", "hjerte", "klem", "tenner", "tannbørste", "fortnite", "kul", "ledning", "eple", "bringebær",
   "blåbær", "blå", "lilla", "ørevoks", "fy", "båt", "bot", "politi", "brannkonstabel", "sykehus", "snabel",
-  "gris", "blomsterbukett", "bryllup", "hår", "hest", "ku", "q-tips", "elsker", "pappa", "promp", "donald"
+  "gris", "blomsterbukett", "bryllup", "hår", "hest", "ku", "q-tips", "elsker", "pappa", "promp", "donald", "tøysekopp"
 ];
