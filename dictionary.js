@@ -8,7 +8,7 @@ window.DICTIONARY = [
   "folk", "ned", "hvis", "derfor", "gamle", "fire", "fordi", "mest", "god", "tilbake", "gir", "barn", "like", "neste", "kanskje",
   "langt", "tatt", "del", "bedre", "komme", "saken", "ønsker", "tror", "viser", "måtte", "aldri", "side", "ligger", "min",
   "hvordan", "hos", "tok", "bør", "beste", "vår", "grunn", "hver", "sett", "vel", "gjort", "land", "allerede", "frem", "heller",
-  "gode", "vet", "jo", "tiden", "fem", "foto", "fram", "plass", "mennesker", "likevel", "svært", "hatt", "fortsatt", "fjor",
+  "gode", "vet", "jo", "tiden", "fem", "foto", "fram", "plass", "gepard", "menneske", "mennesker", "rød", "likevel", "svært", "hatt", "fortsatt", "fjor",
   "bak", "rett", "viktig", "forhold", "videre", "større", "leder", "dermed", "satt", "egen", "nytt", "annen", "landet",
   "samtidig", "mindre", "norge", "bergen", "hoppe", "hvert", "klart", "kveld", "deg", "ett", "mulig", "lite", "mål", "gjelder",
   "tillegg", "liv", "dersom", "verden", "penger", "laget", "nesten", "stort", "henne", "løpet", "finne", "synes", "eneste",

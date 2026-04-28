@@ -8,6 +8,7 @@ const BANNER_COLORS = [
   { value: "#fff3b0", label: "Sol" },
   { value: "#ffd6a5", label: "Fersken" },
   { value: "#ffb3c1", label: "Rosa" },
+  { value: "#ff6b6b", label: "Rød" },
   { value: "#d4b8f0", label: "Lavendel" },
   { value: "#b5d5ff", label: "Blåklokke" },
   { value: "#f5d5c8", label: "Korall" },
@@ -19,7 +20,7 @@ const BANNER_COLORS = [
   { value: "#1a1a1a", label: "Svart" },
 ];
 
-const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄", "🦒", "🦥", "🐱", "🧟", "🧌", "🐶"];
+const BANNER_ANIMALS = ["🦊", "🐺", "🦡", "🦨", "🦝", "🐻", "🐼", "🐨", "🦁", "🐯", "🐮", "🐷", "🐸", "🦋", "🦜", "🦉", "🐧", "🦔", "🐹", "🐰", "🦄", "🐴", "🦒", "🦥", "🐱", "🧑", "🐆", "🍕", "❤️", "🥸", "🧟", "🧌", "🐶"];
 
 const bannerState = {
   selectedColor: BANNER_COLORS[0].value,
