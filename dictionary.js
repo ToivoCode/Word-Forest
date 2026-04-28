@@ -29,6 +29,8 @@ window.DICTIONARY = [
   "faktisk", "sterk", "grad", "samlet", "bildet", "samarbeid", "eldre", "forrig", "slo", "vanlig", "feil", "timer", "bygge",
   "lange", "pris", "betale", "mor", "navn", "mitt", "sist", "tidlig", "glad", "høy", "tenke", "mine", "ferdig", "natt", "vite",
   "lille", "seier", "satte", "venner", "alvorlig", "skje", "filmen", "regner", "mat", "far", "huset", "høyt", "kjøpe", "bil",
-  "bok", "lov", "lage", "din", "sto", "elev"
+  "bok", "lov", "lage", "din", "sto", "elev",
+  "fin", "gul", "blomst", "hjerte", "klem", "tenner", "tannbørste", "fortnite", "kul", "ledning", "eple", "bringebær",
+  "blåbær", "blå", "lilla", "ørevoks", "fy", "båt", "bot", "politi", "brannkonstabel", "sykehus", "snabel",
+  "gris", "blomsterbukett", "bryllup", "hår", "hest", "ku", "q-tips", "elsker", "pappa", "promp", "donald"
 ];
-
