@@ -240,6 +240,11 @@ button:focus-visible {
   border: 2px solid var(--secondary-border);
 }
 
+.secondary-button.is-active {
+  background: var(--secondary-border);
+  color: var(--button-text);
+}
+
 .action-row {
   display: flex;
   justify-content: space-between;

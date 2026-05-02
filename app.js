@@ -40,6 +40,10 @@ const ANIMAL_MOOD = {
   "🐸": "fresh",
 };
 
+const settings = {
+  uppercase: false,
+};
+
 const state = {
   currentRound: 1,
   score: 0,
@@ -63,12 +67,17 @@ const elements = {
   hintButton: document.getElementById("hintButton"),
   nextButton: document.getElementById("nextButton"),
   reshuffleButton: document.getElementById("reshuffleButton"),
+  caseToggleButton: document.getElementById("caseToggleButton"),
   celebration: document.getElementById("celebration"),
   bannerShell: document.getElementById("bannerShell"),
   bannerImage: document.getElementById("bannerImage"),
   bannerCustomDisplay: document.getElementById("bannerCustomDisplay"),
   bannerPicker: document.getElementById("bannerPicker"),
 };
+
+function applyCase(text) {
+  return settings.uppercase ? text.toUpperCase() : text;
+}
 
 function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
@@ -319,7 +328,7 @@ function updateHistory() {
 
 function refreshBoard() {
   updateStatus();
-  elements.scrambledWord.textContent = state.currentScrambled;
+  elements.scrambledWord.textContent = applyCase(state.currentScrambled);
   updateHistory();
 }
 
@@ -432,8 +441,8 @@ function checkGuess(guess) {
 }
 
 function showHint() {
-  const first = state.currentWord[0] || "?";
-  const last = state.currentWord[state.currentWord.length - 1] || "?";
+  const first = applyCase(state.currentWord[0] || "?");
+  const last = applyCase(state.currentWord[state.currentWord.length - 1] || "?");
   setMessage(`Hint: ${first} ... ${last}`);
   elements.guessInput.focus();
 }
@@ -513,7 +522,7 @@ function reshuffleWord() {
   state.currentScrambled = next;
   state.shuffleUsed = true;
   elements.reshuffleButton.disabled = true;
-  elements.scrambledWord.textContent = state.currentScrambled;
+  elements.scrambledWord.textContent = applyCase(state.currentScrambled);
   setMessage("Ordet er stokket om på nytt.");
   elements.guessInput.focus();
 }
@@ -591,6 +600,11 @@ function init() {
   elements.hintButton.addEventListener("click", showHint);
   elements.nextButton.addEventListener("click", nextWord);
   elements.reshuffleButton.addEventListener("click", reshuffleWord);
+  elements.caseToggleButton.addEventListener("click", () => {
+    settings.uppercase = !settings.uppercase;
+    elements.caseToggleButton.classList.toggle("is-active", settings.uppercase);
+    elements.scrambledWord.textContent = applyCase(state.currentScrambled);
+  });
   elements.bannerShell.addEventListener("click", openBannerPicker);
   elements.bannerShell.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openBannerPicker(); }
