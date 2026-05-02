@@ -1,7 +1,11 @@
 const TOTAL_ROUNDS = 20;
 const DICTIONARY = window.DICTIONARY || [];
 
+const RAINBOW_GRADIENT = "linear-gradient(135deg, #ff6b6b 0%, #ffd93d 25%, #6bcb77 50%, #4d96ff 75%, #c77dff 100%)";
+const RAINBOW_THEME_COLOR = "#a060d0";
+
 const BANNER_COLORS = [
+  { value: "rainbow", label: "Regnbue" },
   { value: "#bfe5f5", label: "Himmel" },
   { value: "#a8e6cf", label: "Mynte" },
   { value: "#def4c6", label: "Eng" },
@@ -276,7 +280,8 @@ function applyAnimalMood(palette, animal) {
 
 function applyThemeFromBanner() {
   const root = document.documentElement;
-  const basePalette = buildThemePalette(bannerState.selectedColor);
+  const themeColor = bannerState.selectedColor === "rainbow" ? RAINBOW_THEME_COLOR : bannerState.selectedColor;
+  const basePalette = buildThemePalette(themeColor);
   const palette = applyAnimalMood(basePalette, bannerState.selectedAnimal);
 
   Object.entries(palette).forEach(([name, value]) => {
@@ -453,7 +458,7 @@ function buildBannerPicker() {
     const btn = document.createElement("button");
     btn.type = "button";
     btn.className = "color-swatch";
-    btn.style.background = value;
+    btn.style.background = value === "rainbow" ? RAINBOW_GRADIENT : value;
     btn.dataset.color = value;
     btn.title = label;
     btn.setAttribute("aria-label", label);
@@ -500,7 +505,12 @@ function closeBannerPicker() {
 }
 
 function applyBannerCustomization() {
-  elements.bannerShell.style.backgroundColor = bannerState.selectedColor;
+  if (bannerState.selectedColor === "rainbow") {
+    elements.bannerShell.style.background = RAINBOW_GRADIENT;
+  } else {
+    elements.bannerShell.style.background = "";
+    elements.bannerShell.style.backgroundColor = bannerState.selectedColor;
+  }
   elements.bannerCustomDisplay.textContent = bannerState.selectedAnimal;
   elements.bannerShell.classList.add("is-custom");
   applyThemeFromBanner();
